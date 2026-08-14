@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Trabalhe Conosco — Colégio Avicenna & Arquimedes</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/favicon-avicenna.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#1B2A72; --navy-deep:#141f57; --gold:#D4A020; --arq-blue:#1B4F8A;
+  --bg:#FAF9F6; --card:#ffffff; --ink:#1a1a2e; --muted:#64748b; --line:#e7e4dc;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;}
+h1,h2,h3,.display{font-family:'Fraunces',Georgia,serif;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+/* ---- Header ---- */
+header{padding:22px 0;border-bottom:1px solid var(--line);}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.logos{display:flex;align-items:center;gap:14px;}
+.logos img{height:32px;object-fit:contain;}
+.logos .sep{width:1px;height:26px;background:var(--line);}
+.header-cta{font-size:13px;font-weight:600;color:var(--navy);border:1.5px solid var(--navy);border-radius:999px;padding:8px 18px;text-decoration:none;transition:.15s;}
+.header-cta:hover{background:var(--navy);color:#fff;}
+
+/* ---- Hero ---- */
+.hero{position:relative;min-height:560px;display:flex;align-items:center;overflow:hidden;background:var(--navy-deep);}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 25%;opacity:.42;}
+.hero-scrim{position:absolute;inset:0;background:linear-gradient(100deg,var(--navy-deep) 20%,rgba(20,31,87,.55) 55%,rgba(20,31,87,.25) 100%);}
+.hero-inner{position:relative;padding:88px 0 76px;color:#fff;}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.hero h1{font-size:clamp(34px,5.2vw,56px);font-weight:600;line-height:1.06;max-width:660px;letter-spacing:-.01em;}
+.hero p{font-size:17px;color:#d6dcf5;max-width:540px;margin-top:20px;line-height:1.65;}
+.hero-cta-row{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+.hero-btn{font-family:inherit;font-size:14px;font-weight:700;padding:13px 26px;border-radius:999px;text-decoration:none;cursor:pointer;border:none;transition:.15s;}
+.hero-btn.primary{background:var(--gold);color:var(--navy-deep);}
+.hero-btn.primary:hover{background:#e5b12e;}
+.hero-btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.45);}
+.hero-btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);}
+.hero-stats{display:flex;gap:36px;margin-top:40px;flex-wrap:wrap;}
+.hero-stat b{display:block;font-family:'Fraunces',serif;font-size:28px;color:#fff;}
+.hero-stat span{font-size:12px;color:#aab3dd;}
+
+/* ---- Quem somos ---- */
+.quem-somos{padding:64px 0;}
+.qs-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;}
+.qs-grid p{font-size:15.5px;color:#3f4356;line-height:1.75;}
+.qs-grid p+p{margin-top:14px;}
+.qs-photo{border-radius:16px;overflow:hidden;box-shadow:0 16px 40px rgba(27,42,114,.14);position:relative;}
+.qs-photo img{width:100%;display:block;}
+.qs-photo::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);border-radius:16px;}
+.qs-links{display:flex;gap:18px;margin-top:22px;flex-wrap:wrap;}
+.qs-links a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--navy);text-decoration:none;}
+.qs-links a:hover{text-decoration:underline;}
+
+/* ---- Momentos (galeria) ---- */
+.momentos{padding:20px 0 64px;}
+.momentos-track{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.momento-card{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/5;background:var(--navy-deep);}
+.momento-card img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+.momento-card:hover img{transform:scale(1.05);}
+
+
+/* ---- Vídeo ---- */
+.video-section{padding:12px 0 64px;}
+.video-wrap{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 16px 40px rgba(27,42,114,.14);aspect-ratio:16/9;background:#000;}
+.video-wrap iframe{width:100%;height:100%;border:none;}
+
+/* ---- Section shell ---- */
+section{padding:48px 0;}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:26px;flex-wrap:wrap;}
+.section-head h2{font-size:26px;font-weight:600;color:var(--navy-deep);}
+.section-sub{font-size:13px;color:var(--muted);}
+
+/* ---- Vagas ---- */
+.filtros{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
+.filtros select,.filtros input{font-family:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);outline:none;}
+.filtros select:focus,.filtros input:focus{border-color:var(--navy);}
+.vagas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.vaga-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:20px;transition:.18s;}
+.vaga-card:hover{box-shadow:0 8px 24px rgba(27,42,114,.08);transform:translateY(-2px);}
+.vaga-card .func{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--navy-deep);margin-bottom:6px;}
+.vaga-card .un{display:inline-block;font-size:11px;font-weight:700;color:var(--arq-blue);background:#eaf1f8;padding:3px 9px;border-radius:999px;margin-bottom:10px;}
+.vaga-card .meta{font-size:12.5px;color:var(--muted);margin-bottom:4px;}
+.vaga-card .cta{margin-top:14px;display:inline-block;font-size:13px;font-weight:700;color:var(--navy);cursor:pointer;border:none;background:none;padding:0;}
+.vaga-card .cta:hover{text-decoration:underline;}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted);font-size:14px;background:#fff;border:1px dashed var(--line);border-radius:12px;}
+
+/* ---- Banco de talentos CTA ---- */
+.bt-cta{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%);border-radius:16px;padding:40px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;}
+.bt-cta h3{font-size:22px;font-weight:600;margin-bottom:8px;}
+.bt-cta p{font-size:14px;color:#c7cff0;max-width:440px;}
+.bt-cta button{background:var(--gold);color:var(--navy-deep);border:none;border-radius:999px;padding:12px 26px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.bt-cta button:hover{background:#e5b12e;}
+
+/* ---- Overlay / form ---- */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,31,87,.55);z-index:999;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;}
+.overlay.show{display:flex;}
+.sheet{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:32px;margin:auto;}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.sheet h3{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--navy-deep);}
+.sheet .sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.close-x{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1;padding:4px;}
+.slabel{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px;}
+.slabel:first-of-type{margin-top:0;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.frow.c1{grid-template-columns:1fr;}
+.field{margin-bottom:0;}
+.field label{display:block;font-size:12.5px;color:#475569;margin-bottom:5px;font-weight:500;}
+.field input,.field select,.field textarea{width:100%;font-family:inherit;font-size:13.5px;padding:9px 12px;border:1px solid #cbd5e1;border-radius:8px;outline:none;color:var(--ink);background:#fff;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy);}
+.field textarea{resize:vertical;min-height:64px;}
+.lgpd{display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:20px;font-size:12px;color:#475569;}
+.lgpd input{margin-top:2px;}
+.submit-btn{width:100%;margin-top:18px;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:13px;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;transition:.15s;}
+.submit-btn:hover{background:var(--navy-deep);}
+.submit-btn:disabled{background:#94a3b8;cursor:not-allowed;}
+.form-err{display:none;font-size:12.5px;color:#b91c1c;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:9px 12px;margin-bottom:14px;}
+.success{text-align:center;padding:20px 0;}
+.success .ico{width:56px;height:56px;border-radius:50%;background:#dcfce7;color:#16a34a;font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.success h3{margin-bottom:8px;}
+.success p{color:var(--muted);font-size:13.5px;}
+
+footer{padding:32px 0 40px;text-align:center;font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:24px;}
+
+@media(max-width:780px){.qs-grid{grid-template-columns:1fr;}.momentos-track{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.frow{grid-template-columns:1fr;}.bt-cta{flex-direction:column;text-align:center;}.hero-inner{padding:64px 0 52px;}.momentos-track{grid-template-columns:1fr;}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="logos">
+      <img src="https://raw.githubusercontent.com/juliapedroni-cyber/RH/main/logo_av.png" alt="Colégio Avicenna">
+      <div class="sep"></div>
+      <img src="https://raw.githubusercontent.com/juliapedroni-cyber/RH/main/logo_arq.png" alt="Colégio Arquimedes">
+    </div>
+    <a href="#vagas" class="header-cta">Ver vagas abertas</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-bg" style="background-image:url('https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-equipe.jpg');"></div>
+  <div class="hero-scrim"></div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Trabalhe Conosco</div>
+    <h1>Ensinar é abrir caminhos.</h1>
+    <p>Desde 1994 nos dedicamos a expandir o potencial humano por meio de educação de qualidade em Pirassununga, Porto Ferreira, Leme, Araras e Sumaré. Se você é apaixonado por educação e busca fazer a diferença na vida de jovens, venha construir esse caminho com a gente.</p>
+    <div class="hero-cta-row">
+      <a href="#vagas" class="hero-btn primary">Ver vagas abertas</a>
+      <button class="hero-btn ghost" onclick="abrirCandidatura(null)">Cadastrar currículo</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><b>1994</b><span>desde quando formamos pessoas</span></div>
+      <div class="hero-stat"><b>7</b><span>unidades</span></div>
+      <div class="hero-stat"><b id="stat-vagas">–</b><span>vagas abertas agora</span></div>
+    </div>
+  </div>
+</div>
+
+<section class="quem-somos">
+  <div class="wrap qs-grid">
+    <div>
+      <div class="eyebrow" style="color:var(--arq-blue);">Quem somos</div>
+      <p>Nosso grupo, desde 1994, se dedica a expandir o potencial humano por meio de educação de qualidade. Nosso compromisso é desafiar nossos alunos a irem além, fornecendo o apoio necessário para que descubram todo o seu potencial e alcancem seus objetivos.</p>
+      <p>Localizados em Pirassununga, Porto Ferreira, Leme, Araras e Sumaré, nossa equipe pedagógica é formada por profissionais dedicados e apaixonados pelo ensino, sempre em busca de inovação e excelência. Acreditamos no poder da educação para transformar vidas e estamos em constante evolução para oferecer o melhor aos nossos alunos.</p>
+      <p><strong>Se você é apaixonado por educação e busca fazer a diferença na vida de jovens, venha fazer parte do nosso time.</strong> Junte-se a nós e ajude a construir um futuro melhor através da educação.</p>
+      <div class="qs-links">
+        <a href="https://colegioavicenna.com.br/" target="_blank">🔵 Site do Avicenna</a>
+        <a href="https://colegioarquimedes.com.br/" target="_blank">🔷 Site do Arquimedes</a>
+        <a href="https://www.instagram.com/colegioavicenna/" target="_blank">📷 Instagram Avicenna</a>
+        <a href="https://www.instagram.com/colegioarquimedes/" target="_blank">📷 Instagram Arquimedes</a>
+        <a href="https://www.youtube.com/@colegioavicenna" target="_blank">▶️ YouTube Avicenna</a>
+        <a href="https://www.youtube.com/@arquimedescolegio" target="_blank">▶️ YouTube Arquimedes</a>
+      </div>
+    </div>
+    <div class="qs-photo">
+      <img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-equipe.jpg" alt="Equipe Avicenna & Arquimedes">
+    </div>
+  </div>
+</section>
+
+<section class="momentos">
+  <div class="wrap">
+    <div class="section-head">
+      <div><h2>Momentos que vivemos por aqui</h2><div class="section-sub">Um pouco do dia a dia dentro e fora de sala de aula</div></div>
+    </div>
+    <div class="momentos-track">
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-aprovacao.jpg" alt="Aluno aprovado em Medicina comemorando com o pai"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-comemoracao.jpg" alt="Professor e alunos fazendo experimento científico"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-equipe.jpg" alt="Equipe completa do Avicenna e Arquimedes"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-teatro.jpg" alt="Apresentação teatral com alunos e professores caracterizados"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-feira-conhecimento.jpg" alt="Feira do Conhecimento com projeto de ciências"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-avionu1.jpg" alt="Certificação de aluna no AVIONU"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-avionu2.jpg" alt="Certificação de aluno no AVIONU"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-jogos.jpg" alt="Atividade recreativa com alunos e professoras"></div>
+      <div class="momento-card"><img src="https://raw.githubusercontent.com/juliapedroni-cyber/TrabalheConosco/main/foto-natacao.jpg" alt="Aula de natação com professora e aluno"></div>
+    </div>
+  </div>
+</section>
+
+<section class="video-section">
+  <div class="wrap">
+    <div class="section-head">
+      <div><h2>Conheça um pouco mais</h2><div class="section-sub">Colégio Avicenna</div></div>
+    </div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/7uvELEuAB5E" title="Colégio Avicenna" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<section id="vagas">
+  <div class="wrap">
+    <div class="section-head">
+      <div><h2>Vagas abertas</h2><div class="section-sub">Atualizado em tempo real</div></div>
+    </div>
+    <div class="filtros">
+      <select id="f-unidade" onchange="renderVagasPublicas()">
+        <option value="">Todas as unidades</option>
+        <option value="AVL">Avicenna Leme</option>
+        <option value="AVA">Avicenna Araras</option>
+        <option value="AVP">Avicenna Pirassununga</option>
+        <option value="AVS">Avicenna Sumaré</option>
+        <option value="ACJ">Arquimedes Cidade Jardim</option>
+        <option value="APF">Arquimedes Porto Ferreira</option>
+        <option value="ASD">Arquimedes Santos Dumont</option>
+      </select>
+      <input type="text" id="f-busca" placeholder="Buscar por cargo..." oninput="renderVagasPublicas()">
+    </div>
+    <div id="vagas-grid" class="vagas-grid">
+      <div class="empty-state">Carregando vagas...</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="bt-cta">
+      <div>
+        <h3>Não encontrou a vaga que procura?</h3>
+        <p>Cadastre seu currículo em nosso Banco de Talentos. Mesmo sem uma vaga aberta compatível agora, seu perfil pode ser considerado em oportunidades futuras.</p>
+      </div>
+      <button onclick="abrirCandidatura(null)">Cadastrar currículo</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="qs-links" style="justify-content:center;margin-bottom:14px;">
+      <a href="https://colegioavicenna.com.br/" target="_blank">Site do Avicenna</a>
+      <a href="https://colegioarquimedes.com.br/" target="_blank">Site do Arquimedes</a>
+      <a href="https://www.instagram.com/colegioavicenna/" target="_blank">📷 @colegioavicenna</a>
+      <a href="https://www.instagram.com/colegioarquimedes/" target="_blank">📷 @colegioarquimedes</a>
+      <a href="https://www.youtube.com/@colegioavicenna" target="_blank">▶️ YouTube Avicenna</a>
+      <a href="https://www.youtube.com/@arquimedescolegio" target="_blank">▶️ YouTube Arquimedes</a>
+    </div>
+    Colégio Avicenna & Arquimedes · Ficou com alguma dúvida sobre sua candidatura? Fale com a nossa equipe de RH.
+  </div>
+</footer>
+
+<!-- ===== FORMULÁRIO DE CANDIDATURA ===== -->
+<div class="overlay" id="overlay-candidatura">
+  <div class="sheet">
+    <div id="sheet-form">
+      <div class="sheet-head">
+        <div>
+          <h3 id="sheet-titulo">Cadastrar currículo</h3>
+          <div class="sub" id="sheet-sub">Banco de Talentos — seus dados ficam disponíveis para futuras vagas.</div>
+        </div>
+        <button class="close-x" onclick="fecharCandidatura()">✕</button>
+      </div>
+      <div class="form-err" id="form-err"></div>
+
+      <div class="slabel">Dados pessoais</div>
+      <div class="frow" style="margin-bottom:12px;">
+        <div class="field" style="grid-column:1/-1;"><label>Nome completo *</label><input type="text" id="c-nome"></div>
+        <div class="field"><label>CPF *</label><input type="text" id="c-cpf" maxlength="14" placeholder="000.000.000-00"></div>
+        <div class="field"><label>RG</label><input type="text" id="c-rg" maxlength="12" placeholder="00.000.000-0"></div>
+        <div class="field"><label>Data de nascimento</label><input type="date" id="c-nascimento"></div>
+        <div class="field"><label>Sexo</label><select id="c-sexo"><option value="">Prefiro não informar</option><option value="F">Feminino</option><option value="M">Masculino</option></select></div>
+        <div class="field"><label>Celular / WhatsApp *</label><input type="text" id="c-celular" maxlength="15" placeholder="(00) 00000-0000"></div>
+        <div class="field"><label>E-mail *</label><input type="email" id="c-email"></div>
+        <div class="field" style="grid-column:1/-1;"><label>Cidade onde mora</label><input type="text" id="c-cidade"></div>
+      </div>
+
+      <div class="slabel">Perfil profissional</div>
+      <div class="frow" style="margin-bottom:12px;">
+        <div class="field" style="grid-column:1/-1;"><label id="c-funcao-label">Função de interesse</label><input type="text" id="c-funcao" placeholder="Ex: Professor de Matemática"></div>
+        <div class="field"><label>Formação acadêmica</label><input type="text" id="c-formacao" placeholder="Ex: Pedagogia (concluído)"></div>
+        <div class="field"><label>Experiência resumida</label><input type="text" id="c-experiencia" placeholder="Ex: 3 anos como coordenadora"></div>
+        <div class="field"><label>Disponibilidade de horário</label><select id="c-disp-horario"><option value="">Não informado</option><option value="Manhã">Manhã</option><option value="Tarde">Tarde</option><option value="Noite">Noite</option><option value="Integral">Integral</option></select></div>
+        <div class="field"><label>Disponibilidade para início</label><select id="c-disp-inicio"><option value="">Não informado</option><option value="Imediata">Imediata</option><option value="Até 7 dias">Até 7 dias</option><option value="Até 15 dias">Até 15 dias</option><option value="Até 30 dias">Até 30 dias</option><option value="Após aviso prévio">Após aviso prévio</option></select></div>
+        <div class="field"><label>Possui veículo próprio?</label><select id="c-veiculo"><option value="">Não informado</option><option value="Sim">Sim</option><option value="Não">Não</option></select></div>
+        <div class="field"><label>Possui CNH?</label><select id="c-cnh"><option value="">Não informado</option><option value="Sim">Sim</option><option value="Não">Não</option></select></div>
+        <div class="field" style="grid-column:1/-1;">
+          <label>Currículo (PDF, DOC ou DOCX até 5MB) — opcional</label>
+          <input type="file" id="c-cv-file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;">Se preferir, pode deixar em branco e enviar depois por e-mail.</div>
+        </div>
+      </div>
+
+      <label class="lgpd">
+        <input type="checkbox" id="c-lgpd">
+        <span>Autorizo o Colégio Avicenna & Arquimedes a armazenar e tratar meus dados pessoais para fins de recrutamento e seleção, incluindo a possibilidade de contato sobre futuras oportunidades, conforme a Lei Geral de Proteção de Dados (LGPD).</span>
+      </label>
+
+      <button class="submit-btn" id="btn-enviar-candidatura" onclick="enviarCandidatura()">Enviar candidatura</button>
+    </div>
+
+    <div id="sheet-success" style="display:none;" class="success">
+      <div class="ico">✓</div>
+      <h3 id="success-titulo">Candidatura recebida!</h3>
+      <p id="success-msg">Obrigado pelo interesse. Nosso time de RH vai analisar seu perfil e entrar em contato caso avance no processo.</p>
+      <button class="submit-btn" style="margin-top:24px;" onclick="fecharCandidatura()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient('https://wzlaijdawwaagmpvbvdi.supabase.co', 'sb_publishable_awYAyRcFCW-Z2YjVGB4aUA_uVdUcLVQ');
+
+let vagasPublicas = [];
+let vagaAtual = null; // vaga clicada (null = cadastro espontâneo no banco de talentos)
+
+function soDigitos(s){ return (s||'').replace(/\D/g,''); }
+function mascaraCPF(v){
+  v=soDigitos(v).slice(0,11);
+  v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  return v;
+}
+function mascaraCel(v){
+  v=soDigitos(v).slice(0,11);
+  if(v.length>10) return v.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+  return v.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3').replace(/-$/,'');
+}
+document.getElementById('c-cpf').addEventListener('input', e=>{ e.target.value = mascaraCPF(e.target.value); });
+document.getElementById('c-celular').addEventListener('input', e=>{ e.target.value = mascaraCel(e.target.value); });
+
+const UNIDADE_LABEL = {AVL:'Avicenna Leme',AVA:'Avicenna Araras',AVP:'Avicenna Pirassununga',AVS:'Avicenna Sumaré',ACJ:'Arquimedes Cidade Jardim',APF:'Arquimedes Porto Ferreira',ASD:'Arquimedes Santos Dumont'};
+const TIPO_LABEL = {substituicao:'Substituição', nova_posicao:'Nova posição', efetivacao:'Efetivação'};
+
+async function carregarVagasPublicas() {
+  const { data, error } = await sb.from('vagas').select('*').eq('publica', true).order('data_abertura', {ascending:false});
+  const grid = document.getElementById('vagas-grid');
+  if(error) { grid.innerHTML = '<div class="empty-state">Não foi possível carregar as vagas agora. Tente novamente em instantes.</div>'; return; }
+  vagasPublicas = (data||[]).filter(v => v.etapa !== 'admitida' && v.etapa !== 'cancelada');
+  document.getElementById('stat-vagas').textContent = vagasPublicas.length;
+  renderVagasPublicas();
+}
+
+function renderVagasPublicas() {
+  const grid = document.getElementById('vagas-grid');
+  const un = document.getElementById('f-unidade').value;
+  const busca = (document.getElementById('f-busca').value||'').toLowerCase();
+  const lista = vagasPublicas.filter(v => (!un||v.unidade===un) && (!busca||(v.funcao||'').toLowerCase().includes(busca)));
+  if(!lista.length) { grid.innerHTML = '<div class="empty-state">Nenhuma vaga aberta com esse filtro no momento. Que tal cadastrar seu currículo no Banco de Talentos?</div>'; return; }
+  grid.innerHTML = lista.map(v => `
+    <div class="vaga-card">
+      <span class="un">${UNIDADE_LABEL[v.unidade]||v.unidade}</span>
+      <div class="func">${v.funcao}</div>
+      <div class="meta">${TIPO_LABEL[v.tipo_vaga]||''}${v.carga_horaria_semanal?(' · '+v.carga_horaria_semanal+'h semanais'):''}</div>
+      ${v.horario?`<div class="meta">🕐 ${v.horario}</div>`:''}
+      ${v.modelo_contratacao?`<div class="meta">${v.modelo_contratacao}</div>`:''}
+      <button class="cta" onclick='abrirCandidatura(${JSON.stringify(v.id)})'>Candidatar-se →</button>
+    </div>`).join('');
+}
+
+function abrirCandidatura(vagaId) {
+  vagaAtual = vagaId ? vagasPublicas.find(v=>v.id===vagaId) : null;
+  document.getElementById('sheet-form').style.display = 'block';
+  document.getElementById('sheet-success').style.display = 'none';
+  document.getElementById('form-err').style.display = 'none';
+  ['c-nome','c-cpf','c-rg','c-nascimento','c-celular','c-email','c-cidade','c-formacao','c-experiencia'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-cv-file').value='';
+  document.getElementById('c-sexo').value=''; document.getElementById('c-disp-horario').value=''; document.getElementById('c-disp-inicio').value='';
+  document.getElementById('c-veiculo').value=''; document.getElementById('c-cnh').value=''; document.getElementById('c-lgpd').checked=false;
+  if(vagaAtual) {
+    document.getElementById('sheet-titulo').textContent = 'Candidatar-se: ' + vagaAtual.funcao;
+    document.getElementById('sheet-sub').textContent = (UNIDADE_LABEL[vagaAtual.unidade]||vagaAtual.unidade) + ' · preencha seus dados abaixo';
+    document.getElementById('c-funcao-label').textContent = 'Vaga';
+    document.getElementById('c-funcao').value = vagaAtual.funcao;
+    document.getElementById('c-funcao').disabled = true;
+  } else {
+    document.getElementById('sheet-titulo').textContent = 'Cadastrar currículo';
+    document.getElementById('sheet-sub').textContent = 'Banco de Talentos — seus dados ficam disponíveis para futuras vagas.';
+    document.getElementById('c-funcao-label').textContent = 'Função de interesse';
+    document.getElementById('c-funcao').value = '';
+    document.getElementById('c-funcao').disabled = false;
+  }
+  document.getElementById('overlay-candidatura').classList.add('show');
+  window.scrollTo({top:0});
+}
+function fecharCandidatura() {
+  document.getElementById('overlay-candidatura').classList.remove('show');
+}
+
+async function enviarCandidatura() {
+  const nome = document.getElementById('c-nome').value.trim();
+  const cpf = document.getElementById('c-cpf').value.trim();
+  const celular = document.getElementById('c-celular').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const lgpd = document.getElementById('c-lgpd').checked;
+  const err = document.getElementById('form-err');
+  err.style.display = 'none';
+  if(!nome || !cpf || !celular || !email) { err.textContent = 'Preencha nome, CPF, celular e e-mail.'; err.style.display='block'; return; }
+  if(soDigitos(cpf).length !== 11) { err.textContent = 'Digite um CPF válido.'; err.style.display='block'; return; }
+  if(!lgpd) { err.textContent = 'É necessário autorizar o uso dos seus dados para continuar.'; err.style.display='block'; return; }
+
+  const fileInput = document.getElementById('c-cv-file');
+  const arquivo = fileInput.files[0];
+  if(arquivo && arquivo.size > 5*1024*1024) { err.textContent = 'O currículo precisa ter no máximo 5MB.'; err.style.display='block'; return; }
+
+  const btn = document.getElementById('btn-enviar-candidatura');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  try {
+    // Verifica se já existe candidato com esse CPF (evita duplicidade)
+    const { data: existentes } = await sb.from('candidatos').select('id').eq('cpf', cpf);
+    const jaExiste = existentes && existentes.length ? existentes[0].id : null;
+
+    // Envia o currículo pro Storage, se anexado
+    let curriculoUrl = null;
+    if(arquivo) {
+      const ext = arquivo.name.split('.').pop();
+      const caminho = `${soDigitos(cpf)}_${Date.now()}.${ext}`;
+      const { error: upErr } = await sb.storage.from('curriculos').upload(caminho, arquivo, { upsert: true });
+      if(upErr) throw new Error('Falha ao enviar o currículo: ' + upErr.message);
+      const { data: pub } = sb.storage.from('curriculos').getPublicUrl(caminho);
+      curriculoUrl = pub.publicUrl;
+    }
+
+    const payload = {
+      nome, cpf,
+      rg: document.getElementById('c-rg').value.trim()||null,
+      nascimento: document.getElementById('c-nascimento').value||null,
+      sexo: document.getElementById('c-sexo').value||null,
+      celular, email,
+      cidade: document.getElementById('c-cidade').value.trim()||null,
+      funcao_interesse: document.getElementById('c-funcao').value.trim()||null,
+      disp_horario: document.getElementById('c-disp-horario').value||null,
+      disp_inicio: document.getElementById('c-disp-inicio').value||null,
+      possui_veiculo: document.getElementById('c-veiculo').value||null,
+      possui_cnh: document.getElementById('c-cnh').value||null,
+      unidade_interesse: vagaAtual ? vagaAtual.unidade : null,
+      observacoes: [
+        document.getElementById('c-formacao').value.trim() ? ('Formação: '+document.getElementById('c-formacao').value.trim()) : '',
+        document.getElementById('c-experiencia').value.trim() ? ('Experiência: '+document.getElementById('c-experiencia').value.trim()) : ''
+      ].filter(Boolean).join(' · ') || null,
+    };
+    if(curriculoUrl) payload.curriculo_url = curriculoUrl;
+
+    let candidatoId;
+    if(jaExiste) {
+      const { data, error } = await sb.from('candidatos').update(payload).eq('id', jaExiste).select().single();
+      if(error) throw error;
+      candidatoId = data.id;
+    } else {
+      payload.status = 'banco';
+      payload.fonte = 'Site - Trabalhe Conosco';
+      const { data, error } = await sb.from('candidatos').insert(payload).select().single();
+      if(error) throw error;
+      candidatoId = data.id;
+    }
+
+    if(vagaAtual) {
+      await sb.from('candidaturas').insert({
+        candidato_id: candidatoId, vaga_id: vagaAtual.id,
+        status: 'candidatou-se', lgpd_aceite: true, lgpd_data: new Date().toISOString()
+      });
+    }
+
+    document.getElementById('sheet-form').style.display = 'none';
+    document.getElementById('sheet-success').style.display = 'block';
+    if(vagaAtual) {
+      document.getElementById('success-titulo').textContent = 'Candidatura recebida!';
+      document.getElementById('success-msg').textContent = `Sua candidatura para ${vagaAtual.funcao} foi recebida. Nosso time de RH vai analisar seu perfil.`;
+    } else {
+      document.getElementById('success-titulo').textContent = 'Currículo cadastrado!';
+      document.getElementById('success-msg').textContent = 'Seu currículo foi adicionado ao nosso Banco de Talentos. Entraremos em contato caso surja uma oportunidade compatível.';
+    }
+  } catch(e) {
+    err.textContent = 'Não foi possível enviar agora: ' + (e.message||'tente novamente.');
+    err.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = 'Enviar candidatura';
+}
+
+carregarVagasPublicas();
+</script>
+</body>
+</html>
